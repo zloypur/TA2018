@@ -19,6 +19,8 @@
     <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
     <owner.version>1.0.8</owner.version>
     <selenium-java.version>3.10.0</selenium-java.version>
+    <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+    <test.runner></test.runner>
   </properties>
 
   <build>
@@ -60,8 +62,27 @@
           <target>${java.version}</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFiles>src/test/resources/runners/${test.runner}</suiteXmlFiles>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>lab1_tests</id>
+      <properties>
+        <test.runner>lab1-tests.xml</test.runner>
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
     <dependency>
