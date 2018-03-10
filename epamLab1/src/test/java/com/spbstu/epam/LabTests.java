@@ -1,6 +1,5 @@
 package com.spbstu.epam;
 
-
 import com.spbstu.epam.utils.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.By;
@@ -16,8 +15,8 @@ import java.util.List;
 
 public class LabTests {
 
-    public static final String TEST_SITE = "https://jdi-framework.github.io/tests/index.htm";
-    public static final String TEST_SITE_TITLE = "Index Page";
+    public static final String TEST_WEBSITE = "https://jdi-framework.github.io/tests/index.htm";
+    public static final String TEST_WEBSITE_TITLE = "Index Page";
     public static final String LOGIN = "epam";
     public static final String PASSWORD = "1234";
     public static final String USERNAME = " PITER CHAILOVSKII";
@@ -33,22 +32,20 @@ public class LabTests {
             "UT ENIM AD MINIM VENIAM, QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT " +
             "DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR.";
 
-    private TestConfig config;
     private ChromeDriver driver;
 
     //1 Create BeforeSuite method which get properties from test\resources\test.properties
     @BeforeSuite
     public void beforeSiute (){
-        config = ConfigFactory.create(TestConfig.class);
-        System.setProperty("webdriver.chrome.driver", config.pathToDriver());
+        System.setProperty("webdriver.chrome.driver", ConfigFactory.create(TestConfig.class).pathToDriver());
     }
 
-    //2 Create BeforeTest method which opens Chrome window, maximaized it, navigates to the test site
+    //2 Create BeforeTest method which opens Chrome window, maximaized it, navigates to the test website
     @BeforeTest
     public void beforeTest(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.navigate().to(TEST_SITE);
+        driver.navigate().to(TEST_WEBSITE);
     }
 
     //3 Create AfterTest method which closes Chrome window
@@ -60,13 +57,13 @@ public class LabTests {
     //4 Create a new test which opens site by url
     @Test
     public void openTestSiteByUrl() {
-        Assert.assertEquals(driver.getCurrentUrl(), TEST_SITE);//, String.format("Actual: %s but expected: %s", driver.getCurrentUrl(), TEST_SITE));
+        Assert.assertEquals(driver.getCurrentUrl(), TEST_WEBSITE);
     }
 
     //5 Create a new test which gets title of Chrome
     @Test
     public void browserTitleCheck(){
-        Assert.assertEquals(driver.getTitle(), TEST_SITE_TITLE);
+        Assert.assertEquals(driver.getTitle(), TEST_WEBSITE_TITLE);
     }
 
     //6 Create a new test which log in the test website
@@ -90,7 +87,7 @@ public class LabTests {
     //8 Create a new test which checks title of Chrome
     @Test
     public void browserTitleSecondCheck(){
-        Assert.assertEquals(driver.getTitle(), TEST_SITE_TITLE);
+        Assert.assertEquals(driver.getTitle(), TEST_WEBSITE_TITLE);
     }
 
     //9 Create a new test which checks presence of images on the home page
@@ -113,7 +110,7 @@ public class LabTests {
             Assert.assertEquals(texts.get(i).getAttribute("innerText"), TEXTS[i]);
     }
 
-    //11
+    //11 Create a new test which checks main header and text below it
     @Test
     public void homePageMainHeaderTextTest(){
         WebElement mainHeaderText = driver.findElementByClassName("main-title");
