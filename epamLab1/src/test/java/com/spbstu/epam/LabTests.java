@@ -11,113 +11,120 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class LabTests {
 
-    public static final String TEST_WEBSITE = "https://jdi-framework.github.io/tests/index.htm";
+    public static final String TEST_WEBSITE_URL = "https://jdi-framework.github.io/tests/index.htm";
     public static final String TEST_WEBSITE_TITLE = "Index Page";
     public static final String LOGIN = "epam";
     public static final String PASSWORD = "1234";
     public static final String USERNAME = " PITER CHAILOVSKII";
-    public static final String USERNAME_CLASS_VALUE = "hidden";
     public static final int IMAGES_COUNT = 4;
     public static final int TEXTS_COUNT = 4;
-    public static final String[] TEXTS = {"To include good practices\nand ideas from successful\nEPAM projec",
+    public static final List<String> BENEFITS_TEXT = Arrays.asList("To include good practices\nand ideas from successful\nEPAM projec",
             "To be flexible and\ncustomizable",
             "To be multiplatform",
-            "Already have good base\n(about 20 internal and\nsome external projects),\nwish to get more…"};
+            "Already have good base\n(about 20 internal and\nsome external projects),\nwish to get more…");
     public static final String MAIN_HEADER_TEXT = "EPAM FRAMEWORK WISHES…";
-    public static final String HEADER_TEXT = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISICING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. " +
-            "UT ENIM AD MINIM VENIAM, QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT " +
+    public static final String HEADER_TEXT = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISICING ELIT," +
+            " SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. UT ENIM AD MINIM VENIAM, " +
+            "QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT " +
             "DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR.";
 
     private ChromeDriver driver;
 
-    //1 Create BeforeSuite method which get properties from test\resources\test.properties
+    /*
+     * Create BeforeSuite method which get properties from test\resources\test.properties
+     */
     @BeforeSuite
     public void beforeSiute (){
         System.setProperty("webdriver.chrome.driver", ConfigFactory.create(TestConfig.class).pathToDriver());
     }
 
-    //2 Create BeforeTest method which opens Chrome window, maximaized it, navigates to the test website
+    /*
+     * Create BeforeTest method which opens Chrome window, maximaized it, navigates to the test website
+     */
     @BeforeTest
     public void beforeTest(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.navigate().to(TEST_WEBSITE);
     }
 
-    //3 Create AfterTest method which closes Chrome window
+    /*
+     * Create AfterTest method which closes Chrome window
+     */
     @AfterTest
     public void  afterTest(){
         driver.close();
     }
 
-    //4 Create a new test which opens site by url
+    /*
+     * Create Test method which makes all the checks from the specification
+     */
     @Test
-    public void openTestSiteByUrl() {
-        Assert.assertEquals(driver.getCurrentUrl(), TEST_WEBSITE);
-    }
+    public void websiteTest(){
+        /*
+         * open site by url
+         */
+        driver.navigate().to(TEST_WEBSITE_URL);
+        Assert.assertEquals(driver.getCurrentUrl(), TEST_WEBSITE_URL);
 
-    //5 Create a new test which gets title of Chrome
-    @Test
-    public void browserTitleCheck(){
+        /*
+         * chrome title check
+         */
         Assert.assertEquals(driver.getTitle(), TEST_WEBSITE_TITLE);
-    }
 
-    //6 Create a new test which log in the test website
-    @Test
-    public void testSiteLogIn(){
-        driver.findElementByCssSelector("[href=\"#\"]").click();
-        driver.findElement(By.id("Login")).sendKeys(LOGIN);
-        driver.findElement(By.id("Password")).sendKeys(PASSWORD);
-        driver.findElementByCssSelector("[type=\"submit\"]").click();
-        Assert.assertTrue(driver.findElementByClassName("logout").isDisplayed(), "Logout button isn\'t displayed. Login wasn\'t successful.");
-    }
+        /*
+         * log in website
+         */
+        driver.findElementByCssSelector(".profile-photo").click();
+        driver.findElementByCssSelector("#Login").sendKeys(LOGIN);
+        driver.findElementByCssSelector("#Password").sendKeys(PASSWORD);
+        driver.findElementByCssSelector("form .btn-login").click();
+        Assert.assertTrue(driver.findElementByCssSelector(".logout").isDisplayed(),
+                "Logout button isn\'t displayed. Login wasn\'t successful.");
 
-    //7 Create a new test which checks user name
-    @Test
-    public void userNameCheck(){
-        WebElement userName = driver.findElementByClassName("profile-photo");
-        Assert.assertNotEquals(userName.findElement(By.tagName("span")).getAttribute("class"), USERNAME_CLASS_VALUE, String.format("User name isn\'t displayed because web element class value is \"%s\"", USERNAME_CLASS_VALUE));
-        Assert.assertEquals(userName.getAttribute("innerText"), USERNAME);
-    }
+        /*
+         * user name check
+         */
+        Assert.assertTrue(0 == driver.findElementByCssSelector(".profile-photo").
+                findElements(By.cssSelector(".hidden")).size(), "User name isn\'t displayed");
+        Assert.assertEquals(driver.findElementByCssSelector(".profile-photo").
+                getAttribute("innerText"), USERNAME);
 
-    //8 Create a new test which checks title of Chrome
-    @Test
-    public void browserTitleSecondCheck(){
+        /*
+         * chrome title second check
+         */
         Assert.assertEquals(driver.getTitle(), TEST_WEBSITE_TITLE);
-    }
 
-    //9 Create a new test which checks presence of images on the home page
-    @Test
-    public void homePageImageDisplayTest(){
-        List<WebElement> images = driver.findElementsByClassName("benefit-icon");
-        Assert.assertEquals(images.size(), IMAGES_COUNT, String.format("There are %d images on the page which is lesser then required (%d)",images.size(), IMAGES_COUNT));
-        for(WebElement e:images)
-            Assert.assertTrue(e.isDisplayed(), String.format("%s image isn't displayed.", e.findElement(By.tagName("span")).getAttribute("class")));
-    }
+        /*
+         * presence of images on the home page check
+         */
+        List<WebElement> images = driver.findElementsByCssSelector(".icons-benefit");
+        Assert.assertEquals(images.size(), IMAGES_COUNT,
+                String.format("There are %d images on the page which is lesser then required (%d)",images.size(), IMAGES_COUNT));
+        images.forEach(e -> Assert.assertTrue(e.isDisplayed(),
+                String.format("\"%s\" image isn't displayed.", e.getAttribute("className"))));
 
-    //10 Create a new test which checks presence and correctness of under images texts on the home page
-    @Test
-    public void homePageUnderImageTextTest(){
-        List<WebElement> texts = driver.findElementsByClassName("benefit-txt");
-        Assert.assertEquals(texts.size(), TEXTS_COUNT, String.format("There are %d texts on the page which is lesser then required (%d)",texts.size(), TEXTS_COUNT));
-        for(WebElement e:texts)
-            Assert.assertTrue(e.isDisplayed(), String.format("This text isn't displayed: \"%s\"", e.getAttribute("innerText")));
-        for(int i = 0; i < texts.size();i++)
-            Assert.assertEquals(texts.get(i).getAttribute("innerText"), TEXTS[i]);
-    }
+        /*
+         * presence and correctness of under images texts on the home page check
+         */
+        List<WebElement> texts = driver.findElementsByCssSelector(".benefit-txt");
+        Assert.assertEquals(texts.size(), TEXTS_COUNT,
+                String.format("There are %d texts on the page which is lesser then required (%d)",texts.size(), TEXTS_COUNT));
+        texts.forEach(e -> Assert.assertTrue(BENEFITS_TEXT.contains(e.getText()),
+                String.format("No such benefit text:\"%s\"", e.getText())));
 
-    //11 Create a new test which checks main header and text below it
-    @Test
-    public void homePageMainHeaderTextTest(){
-        WebElement mainHeaderText = driver.findElementByClassName("main-title");
-        Assert.assertTrue(mainHeaderText.isDisplayed(), String.format("Main header text isn\'t displayed."));
+        /*
+         * main header and text below check
+         */
+        WebElement mainHeaderText = driver.findElementByCssSelector(".main-title");
+        WebElement headerText = driver.findElementByCssSelector(".main-txt");
+        Assert.assertTrue(mainHeaderText.isDisplayed(), "Main header text isn\'t displayed.");
+        Assert.assertTrue(headerText.isDisplayed(), "Header text isn\'t displayed.");
         Assert.assertEquals(mainHeaderText.getAttribute("innerText"), MAIN_HEADER_TEXT);
-        WebElement headerText = driver.findElementByClassName("main-txt");
-        Assert.assertTrue(headerText.isDisplayed(), String.format("Header text isn\'t displayed."));
         Assert.assertEquals(headerText.getAttribute("innerText"), HEADER_TEXT);
     }
 }
