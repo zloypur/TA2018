@@ -1,5 +1,6 @@
 package com.spbstu.epam;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,8 +14,10 @@ import utils.TestConfig;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO you have to format your code and remove useless imports
 public class WebsiteTest {
 
+    // TODO it will be better if you create ENUM(in a different file) for store this sort of data
     public static final String TEST_WEBSITE_URL = ConfigFactory.create(TestConfig.class).homePageURL();
     public static final String TEST_WEBSITE_TITLE = "Index Page";
     public static final String LOGIN = "epam";
@@ -31,6 +34,7 @@ public class WebsiteTest {
             " SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. UT ENIM AD MINIM VENIAM, " +
             "QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT " +
             "DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR.";
+    // !TODO
 
     private WebDriver driver;
 
@@ -38,7 +42,8 @@ public class WebsiteTest {
      * Create BeforeSuite method which get properties from test\resources\test.properties
      */
     @BeforeSuite
-    public void beforeSiute (){
+    public void beforeSuite (){ // <--
+        // TODO this not really good idea couse in case if you have more than one property you will recreate the whole TestConfig...
         System.setProperty("webdriver.chrome.driver", ConfigFactory.create(TestConfig.class).pathToDriver());
     }
 
@@ -80,6 +85,7 @@ public class WebsiteTest {
          * log in website
          */
         EpamTestWebsite.homePage.login(LOGIN, PASSWORD);
+        // TODO what is the reason why you are using shielding character ? From my point of view it will work pretty good as is...
         Assert.assertTrue(EpamTestWebsite.homePage.isLoggedIn(),
                 "Logout button isn\'t displayed. Login wasn\'t successful.");
 
