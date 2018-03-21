@@ -109,5 +109,12 @@
       <artifactId>selenium-java</artifactId>
       <version>${selenium-java.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 </project>

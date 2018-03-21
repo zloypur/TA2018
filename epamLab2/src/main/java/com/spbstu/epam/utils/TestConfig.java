@@ -1,4 +1,4 @@
-package utils;
+package com.spbstu.epam.utils;
 
 import org.aeonbits.owner.Config;
 
