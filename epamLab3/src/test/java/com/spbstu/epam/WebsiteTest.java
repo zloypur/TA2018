@@ -8,9 +8,13 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.spbstu.epam.enums.HOME_PAGE_DATA.*;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENT_PAGE_CHECKBOX_TEXT.*;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENT_PAGE_DROPDOWN_TEXT.*;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENT_PAGE_RADIO_TEXT.*;
 
 public class WebsiteTest {
 
@@ -107,6 +111,29 @@ public class WebsiteTest {
          */
         EpamTestWebsiteSelenide.homePageSelenide.openDifferentElementsPage();
 
+        /*
+         * checks presence of all needed elements on the Different Elements page
+         */
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.checkPageElements();
+
+        /*
+         * select required elements on the Different Elements page
+         */
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxSelected(LEFT_CHECKBOX_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxSelected(MID_RIGHT_CHECKBOX_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setRadioSelected(RIGHT_RADIO_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setDropdownValue(DROPDOWN_TEXT_4.getValue().toString());
+
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.checkLogs(
+                (List<String>) Arrays.asList(DROPDOWN_TEXT_4.getValue().toString(),
+                        RIGHT_RADIO_TEXT.getValue().toString(), MID_RIGHT_CHECKBOX_TEXT.getValue().toString(),
+                LEFT_CHECKBOX_TEXT.getValue().toString()));
+
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 }
