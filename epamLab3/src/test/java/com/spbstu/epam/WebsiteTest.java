@@ -13,7 +13,7 @@ import java.util.List;
 import static com.spbstu.epam.enums.HOME_PAGE_DATA.*;
 
 public class WebsiteTest {
-    
+
     /*
      * Create BeforeSuite method which get properties from test\resources\test.properties and configuring Selenide
      */
@@ -102,8 +102,10 @@ public class WebsiteTest {
         EpamTestWebsiteSelenide.homePageSelenide.checkLeftSideServiceMenuOption(
                 (List<String>)LEFT_SIDE_SERVICE_MENU_OPTIONS_TEXT.getValue());
 
-        EpamTestWebsiteSelenide.homePageSelenide.openHeaderServiceMenu();
-        EpamTestWebsiteSelenide.homePageSelenide.openDifferentElementPage();
+        /*
+         * open other page through header menu Service -> Different Elements
+         */
+        EpamTestWebsiteSelenide.homePageSelenide.openDifferentElementsPage();
 
 
     }

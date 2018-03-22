@@ -123,7 +123,10 @@ public class HomePageSelenide {
         optionsText.forEach(e -> leftSideServiceMenu.shouldHave(text(e)));
     }
 
-    public void openDifferentElementPage(){
+    public void openDifferentElementsPage(){
+        if(headerDropdownServiceMenu.is(hidden)) {
+            headerDropdownServiceButton.click();
+        }
         differentElementPageButton.click();
     }
 }
