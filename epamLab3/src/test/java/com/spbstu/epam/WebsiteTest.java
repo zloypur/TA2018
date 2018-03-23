@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.spbstu.epam.enums.HOME_PAGE_DATA.*;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENT_PAGE_CHECKBOX_TEXT.*;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENT_PAGE_DROPDOWN_TEXT.*;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENT_PAGE_RADIO_TEXT.*;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_CHECKBOX_TEXT.*;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_DROPDOWN_TEXT.*;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_RADIO_TEXT.*;
 
 public class WebsiteTest {
 
@@ -50,11 +50,6 @@ public class WebsiteTest {
         Assert.assertEquals(EpamTestWebsiteSelenide.homePageSelenide.currentURL(), TEST_WEBSITE_URL.getValue());
 
         /*
-         * chrome title check
-         */
-        Assert.assertEquals(EpamTestWebsiteSelenide.homePageSelenide.currentBrowserTitle(), TEST_WEBSITE_TITLE.getValue());
-
-        /*
          * log in website
          */
         EpamTestWebsiteSelenide.homePageSelenide.login(LOGIN.getValue().toString(), PASSWORD.getValue().toString());
@@ -64,11 +59,6 @@ public class WebsiteTest {
          */
         EpamTestWebsiteSelenide.homePageSelenide.checkUserNameVisibility();
         EpamTestWebsiteSelenide.homePageSelenide.checkUserName(USERNAME.getValue().toString());
-
-        /*
-         * chrome title second check
-         */
-        Assert.assertEquals(EpamTestWebsiteSelenide.homePageSelenide.currentBrowserTitle(), TEST_WEBSITE_TITLE.getValue());
 
         /*
          * presence of images on the home page check
@@ -125,15 +115,14 @@ public class WebsiteTest {
         EpamTestWebsiteSelenide.differentElementsPageSelenide.setDropdownValue(DROPDOWN_TEXT_4.getValue().toString());
 
         EpamTestWebsiteSelenide.differentElementsPageSelenide.checkLogs(
-                (List<String>) Arrays.asList(DROPDOWN_TEXT_4.getValue().toString(),
-                        RIGHT_RADIO_TEXT.getValue().toString(), MID_RIGHT_CHECKBOX_TEXT.getValue().toString(),
-                LEFT_CHECKBOX_TEXT.getValue().toString()));
+                (List<String>) Arrays.asList( DROPDOWN_TEXT_4.getValue().toString(), RIGHT_RADIO_TEXT.getValue().toString(),
+                        MID_RIGHT_CHECKBOX_TEXT.getValue().toString(),
+                        LEFT_CHECKBOX_TEXT.getValue().toString()));
 
-        try {
-            wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxUnselected(LEFT_CHECKBOX_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxUnselected(MID_RIGHT_CHECKBOX_TEXT.getValue().toString());
 
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.checkLogs(Arrays.asList(LEFT_CHECKBOX_TEXT.getValue().toString(),
+                MID_RIGHT_CHECKBOX_TEXT.getValue().toString()));
     }
 }
