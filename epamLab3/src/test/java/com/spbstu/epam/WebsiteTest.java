@@ -47,7 +47,6 @@ public class WebsiteTest {
          * open site by url
          */
         EpamTestWebsiteSelenide.homePageSelenide.open();
-        Assert.assertEquals(EpamTestWebsiteSelenide.homePageSelenide.currentURL(), TEST_WEBSITE_URL.getValue());
 
         /*
          * log in website
@@ -109,20 +108,36 @@ public class WebsiteTest {
         /*
          * select required elements on the Different Elements page
          */
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxSelected(LEFT_CHECKBOX_TEXT.getValue().toString());
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxSelected(MID_RIGHT_CHECKBOX_TEXT.getValue().toString());
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.setRadioSelected(RIGHT_RADIO_TEXT.getValue().toString());
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.setDropdownValue(DROPDOWN_TEXT_4.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxSelected(
+                LEFT_CHECKBOX_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxSelected(
+                MID_RIGHT_CHECKBOX_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setRadioSelected(
+                RIGHT_RADIO_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setDropdownValue(
+                DROPDOWN_TEXT_4.getValue().toString());
 
+        /*
+         * checks that logs are coinciding with performed actions
+         */
         EpamTestWebsiteSelenide.differentElementsPageSelenide.checkLogs(
-                (List<String>) Arrays.asList( DROPDOWN_TEXT_4.getValue().toString(), RIGHT_RADIO_TEXT.getValue().toString(),
+                (List<String>) Arrays.asList( DROPDOWN_TEXT_4.getValue().toString(),
+                        RIGHT_RADIO_TEXT.getValue().toString(),
                         MID_RIGHT_CHECKBOX_TEXT.getValue().toString(),
                         LEFT_CHECKBOX_TEXT.getValue().toString()));
 
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxUnselected(LEFT_CHECKBOX_TEXT.getValue().toString());
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxUnselected(MID_RIGHT_CHECKBOX_TEXT.getValue().toString());
+        /*
+         * unselect required elements
+         */
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxUnselected(
+                LEFT_CHECKBOX_TEXT.getValue().toString());
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.setCheckboxUnselected(
+                MID_RIGHT_CHECKBOX_TEXT.getValue().toString());
 
-        EpamTestWebsiteSelenide.differentElementsPageSelenide.checkLogs(Arrays.asList(LEFT_CHECKBOX_TEXT.getValue().toString(),
-                MID_RIGHT_CHECKBOX_TEXT.getValue().toString()));
+        /*
+         * check that logs are coinciding with performed actions
+         */
+        EpamTestWebsiteSelenide.differentElementsPageSelenide.checkLogs(Arrays.asList(
+                LEFT_CHECKBOX_TEXT.getValue().toString(), MID_RIGHT_CHECKBOX_TEXT.getValue().toString()));
     }
 }

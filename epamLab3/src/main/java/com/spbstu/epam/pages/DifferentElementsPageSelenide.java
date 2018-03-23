@@ -32,9 +32,9 @@ public class DifferentElementsPageSelenide {
 
     ElementsCollection logRecords = Selenide.$$(".logs li");
 
-    String checkboxInputCssSelector = "[type=checkbox]";
+    final String checkboxInputCssSelector = "[type=checkbox]";
 
-    String radioInputCssSelector = "[type=radio]";
+    final String radioInputCssSelector = "[type=radio]";
 
     public void checkPageElements() {
         checkboxes.forEach(e -> e.shouldBe(visible));
@@ -72,7 +72,7 @@ public class DifferentElementsPageSelenide {
     public void checkLogs(List<String> names) {
         for (String name : names) {
             SelenideElement element = logRecords.findBy(text(name));
-            String[] splittedString = element.getText().split("\\d\\d:\\d\\d:\\d\\d ")[1].split(": ");//this looks awful, but I haven't had a better idea
+            String[] splittedString = element.getText().split("\\d\\d:\\d\\d:\\d\\d ")[1].split(": ");//this looks awful, but I don't have a better idea
             String category = splittedString[0];
             String param = splittedString[1].split(" to ")[1];
             switch (category) {
