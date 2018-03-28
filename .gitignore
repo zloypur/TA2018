@@ -1,10 +1,4 @@
-epamLab1/*iml
-epamLab1/target/
-epamLab1/.idea/
-epamLab2/*iml
-epamLab2/target/
-epamLab2/.idea/
-epamLab3/*iml
-epamLab3/target/
-epamLab3/.idea/
-epamLab3/build/
+*/*.iml
+*/target
+*/build
+*/.idea
