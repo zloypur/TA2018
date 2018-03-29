@@ -1,44 +1,65 @@
 package com.spbstu.epam.pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import lombok.val;
+import com.spbstu.epam.utils.ElementsCollectionWrapper;
+import org.openqa.selenium.support.FindBy;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Condition.*;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_LOG_CATEGORIES.LOG_CATEGORY_1;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_LOG_CATEGORIES.LOG_CATEGORY_DROPDOWN;
+import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_LOG_CATEGORIES.LOG_CATEGORY_RADIOS;
 
 public class DifferentElementsPageSelenide {
-    ElementsCollection checkboxes = Selenide.$$(".label-checkbox");
+    @FindBy(css = ".label-checkbox")
+    ElementsCollection checkboxes;
 
-    ElementsCollection radios = Selenide.$$(".label-radio");
+    @FindBy(css = ".label-radio")
+    ElementsCollection radios;
 
-    SelenideElement dropdown = Selenide.$(".colors .uui-form-element");
+    @FindBy(css = ".colors .uui-form-element")
+    SelenideElement dropdown;
 
-    SelenideElement defaultButton = Selenide.$("[value=\"Default Button\"]");
+    @FindBy(css = "[value=\"Default Button\"]")
+    SelenideElement defaultButton;
 
-    SelenideElement button = Selenide.$("[value=\"Button\"]");
+    @FindBy(css = "[value=\"Button\"]")
+    SelenideElement button;
 
-    SelenideElement leftSideSection = Selenide.$("#mCSB_1");
+    @FindBy(css = "#mCSB_1")
+    SelenideElement leftSideSection;
 
-    SelenideElement rightSideSection = Selenide.$("#mCSB_2");
+    @FindBy(css = "#mCSB_2")
+    SelenideElement rightSideSection;
 
-    ElementsCollection logRecords = Selenide.$$(".logs li");
+    @FindBy(css = ".logs li")
+    ElementsCollection logRecords;
 
-    final String checkboxInputCssSelector = "[type=checkbox]";
+    final String CHECKBOX_INPUT_CSS_SELECTOR = "[type=checkbox]";
 
-    final String radioInputCssSelector = "[type=radio]";
+    final String RADIO_INPUT_CSS_SELECTOR = "[type=radio]";
+
+    ElementsCollectionWrapper checkboxesWrapped;
+
+    ElementsCollectionWrapper radiosWrapped;
+
+    Deque<String> pageLogs = new LinkedList<>();
+
+    public DifferentElementsPageSelenide() {
+        Selenide.page(this);
+    }
 
     public void checkPageElements() {
         checkboxes.forEach(e -> e.shouldBe(visible));
+        checkboxesWrapped = new ElementsCollectionWrapper(checkboxes, CHECKBOX_INPUT_CSS_SELECTOR);
         radios.forEach(e -> e.shouldBe(visible));
+        radiosWrapped = new ElementsCollectionWrapper(radios, RADIO_INPUT_CSS_SELECTOR);
         dropdown.shouldBe(visible);
         defaultButton.shouldBe(visible);
         button.shouldBe(visible);
@@ -47,58 +68,34 @@ public class DifferentElementsPageSelenide {
     }
 
     public void setCheckboxSelected(String s) {
-        if (!checkboxes.find(text(s)).$(checkboxInputCssSelector).is(selected)) {
-            checkboxes.find(text(s)).setSelected(true);
+        if (!checkboxesWrapped.selectSubElement(s).is(checked)) {
+            checkboxesWrapped.selectElement(s).setSelected(true);
         }
-        checkboxes.find(text(s)).$(checkboxInputCssSelector).shouldBe(checked);
+        checkboxesWrapped.selectSubElement(s).shouldBe(checked);
+        pageLogs.addFirst(String.format("%s: condition changed to %s", s, true));
     }
 
     public void setCheckboxUnselected(String s) {
-        if (checkboxes.find(text(s)).$(checkboxInputCssSelector).is(selected)) {
-            checkboxes.find(text(s)).setSelected(true);
+        if (checkboxesWrapped.selectSubElement(s).is(checked)) {
+            checkboxesWrapped.selectElement(s).setSelected(true);
         }
-        checkboxes.find(text(s)).$(checkboxInputCssSelector).shouldNotBe(checked);
+        checkboxesWrapped.selectSubElement(s).shouldNotBe(checked);
+        pageLogs.addFirst(String.format("%s: condition changed to %s", s, false));
     }
 
     public void setRadioSelected(String s) {
-        radios.find(text(s)).setSelected(true).$(radioInputCssSelector).shouldBe(selected);
+        radiosWrapped.selectElement(s).setSelected(true);
+        radiosWrapped.selectSubElement(s).shouldBe(selected);
+        pageLogs.addFirst(String.format("%s: value changed to %s", LOG_CATEGORY_RADIOS.getValue(), s));
     }
 
     public void setDropdownValue(String s) {
         dropdown.selectOption(s);
         dropdown.shouldHave(text(s));
+        pageLogs.addFirst(String.format("%s: value changed to %s", LOG_CATEGORY_DROPDOWN.getValue(), s));
     }
 
     public void checkLogs(List<String> names) {
-        for (String name : names) {
-            SelenideElement element = logRecords.findBy(text(name));
-            String[] splittedString = element.getText().split("\\d\\d:\\d\\d:\\d\\d ")[1].split(": ");//this looks awful, but I don't have a better idea
-            String category = splittedString[0];
-            String param = splittedString[1].split(" to ")[1];
-            switch (category) {
-                case "metal": {
-                    if (logRecords.findBy(text(category)).getText().equals(element.getText())) {
-                        radios.findBy(text(name)).$(radioInputCssSelector).shouldBe(selected);
-                    } else {
-                        radios.findBy(text(name)).$(radioInputCssSelector).shouldNotBe(selected);
-                    }
-                } break;
-                case "Colors": {
-                    if (logRecords.findBy(text(category)).getText().equals(element.getText())) {
-                        dropdown.getSelectedOption().shouldHave(text(name));
-                    } else {
-                        dropdown.getSelectedOption().shouldNotHave(text(name));
-                    }
-                } break;
-                default: {
-                    if (Boolean.valueOf(param)) {
-                        checkboxes.findBy(text(name)).$(checkboxInputCssSelector).shouldBe(selected);
-                    } else {
-                        checkboxes.findBy(text(name)).$(checkboxInputCssSelector).shouldNotBe(selected);
-                    }
-                } break;
-            }
-        }
+        logRecords.shouldHave(texts(new ArrayList(pageLogs)));
     }
-
 }

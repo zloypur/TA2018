@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum DIFFERENT_ELEMENTS_PAGE_LOG_CATEGORIES {//unused
-    LOG_CATEGORY_1("metal"), LOG_CATEGORY_2("Colors");
+    LOG_CATEGORY_RADIOS("metal"), LOG_CATEGORY_DROPDOWN("Colors");
 
     private String value;
 }

@@ -3,46 +3,58 @@ package com.spbstu.epam.pages;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 import com.spbstu.epam.utils.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
-import static com.codeborne.selenide.Condition.hidden;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 
 
 public class HomePageSelenide {
-    SelenideElement profilePhoto = Selenide.$(".profile-photo");
+    @FindBy(css = ".profile-photo")
+    SelenideElement profilePhoto;
 
-    SelenideElement loginField = Selenide.$("#Login");
+    @FindBy(css = "#Login")
+    SelenideElement loginField;
 
-    SelenideElement passwordField = Selenide.$("#Password");
+    @FindBy(css = "#Password")
+    SelenideElement passwordField;
 
-    SelenideElement submit = Selenide.$("form .btn-login");
+    @FindBy(css = "form .btn-login")
+    SelenideElement submit;
 
-    SelenideElement logoutBtn = Selenide.$(".logout");
+    @FindBy(css = ".logout")
+    SelenideElement logoutBtn;
 
-    ElementsCollection images = Selenide.$$(".icons-benefit");
+    @FindBy(css = ".icons-benefit")
+    ElementsCollection images;
 
-    ElementsCollection benefitsTesxt = Selenide.$$(".benefit-txt");
+    @FindBy(css = ".benefit-txt")
+    ElementsCollection benefitsText;
 
-    SelenideElement mainTitle = Selenide.$(".main-title");
+    @FindBy(css = ".main-title")
+    SelenideElement mainTitle;
 
-    SelenideElement mainText = Selenide.$(".main-txt");
+    @FindBy(css = ".main-txt")
+    SelenideElement mainText;
 
-    SelenideElement headerDropdownServiceButton = Selenide.$(".m-l8 .dropdown");
+    @FindBy(css = ".m-l8 .dropdown")
+    SelenideElement headerDropdownServiceButton;
 
-    SelenideElement headerDropdownServiceMenu = Selenide.$(".m-l8 .dropdown-menu");
+    @FindBy(css = ".m-l8 .dropdown-menu")
+    SelenideElement headerDropdownServiceMenu;
 
-    SelenideElement leftSideServiceButton = Selenide.$(".sub-menu");
+    @FindBy(css = ".sub-menu")
+    SelenideElement leftSideServiceButton;
 
-    SelenideElement leftSideServiceMenu = Selenide.$(".sub");
+    @FindBy(css = ".sub")
+    SelenideElement leftSideServiceMenu;
 
-    SelenideElement differentElementPageButton = Selenide.$(".dropdown-menu | [href=\"page8.htm\"]");
+    @FindBy(css = ".dropdown-menu | [href=\"page8.htm\"]")
+    SelenideElement differentElementPageButton;
 
     public HomePageSelenide() {
         Selenide.page(this);
@@ -52,9 +64,7 @@ public class HomePageSelenide {
         Selenide.open(ConfigFactory.create(TestConfig.class).homePageURL());
     }
 
-    public String currentURL(){ return WebDriverRunner.url(); }
-
-    public String currentBrowserTitle(){
+    public String currentBrowserTitle() {
         return Selenide.title();
     }
 
@@ -63,68 +73,56 @@ public class HomePageSelenide {
         loginField.sendKeys(login);
         passwordField.sendKeys(password);
         submit.click();
-    }
-
-    public void checkLogIn(){
         logoutBtn.shouldBe(visible);
     }
 
-    public void checkUserNameVisibility(){
+    public void checkLogIn() {
+        logoutBtn.shouldBe(visible);
+    }
+
+    public void checkUserName(String name) {
         profilePhoto.shouldBe(visible);
+        profilePhoto.shouldHave(text(name));
     }
 
-    public void checkUserName(String name) { profilePhoto.shouldHave(text(name));}
-
-    public void checkImagesCount(Integer size){
-        images.shouldHaveSize(size);
+    public void checkImages(Integer count) {
+        images.shouldHaveSize(count);
+        images.forEach(e -> e.shouldBe(visible));
     }
 
-    public void isImagesVisibility(){ images.forEach(e -> e.shouldBe(visible)); }
-
-    public void checkTextsCount(Integer size){ benefitsTesxt.shouldHaveSize(size); }
-
-    public void checkTextsDisplayedCorrectly(List<String> benefitsText){
-        this.benefitsTesxt.shouldHave(texts(benefitsText));
+    public void checkTexts(List<String> benefitsText) {
+        this.benefitsText.shouldHaveSize(benefitsText.size());
+        this.benefitsText.shouldHave(texts(benefitsText));
     }
 
-    public void checkMainTitleVisibility(){ mainTitle.shouldBe(visible); }
+    public void checkMainTitle(String title) {
+        mainTitle.shouldBe(visible);
+        mainTitle.shouldHave(text(title));
+    }
 
-    public void checkMainTextsVisibility(){ mainText.shouldBe(visible); }
+    public void checkMainText(String text) {
+        mainText.shouldBe(visible);
+        mainText.shouldHave(text(text));
+    }
 
-    public void checkMainTitleText(String title){ mainTitle.shouldHave(text(title)); }
-
-    public void checkMainTextText(String text){ mainText.shouldHave(text(text)); }
-
-    public void openHeaderServiceMenu(){
-        if(headerDropdownServiceMenu.is(hidden)) {
+    public void checkHeaderServiceMenuOptions(List<String> optionsText) {
+        if (headerDropdownServiceMenu.is(hidden)) {
             headerDropdownServiceButton.click();
         }
-    }
-
-    public void checkHeaderServideMenuVisibility(){
         headerDropdownServiceMenu.shouldBe(visible);
-    }
-
-    public void checkHeaderServiceMenuOptions(List<String> optionsText){
         optionsText.forEach(e -> headerDropdownServiceMenu.shouldHave(text(e)));
     }
 
-    public void openLeftSideServiceMenu(){
-        if(leftSideServiceMenu.is(hidden)) {
+    public void checkLeftSideServiceMenuOption(List<String> optionsText) {
+        if (leftSideServiceMenu.is(hidden)) {
             leftSideServiceButton.click();
         }
-    }
-
-    public void checkLeftSideServiceMenuVisibility(){
         leftSideServiceMenu.shouldBe(visible);
-    }
-
-    public void  checkLeftSideServiceMenuOption(List<String> optionsText){
         optionsText.forEach(e -> leftSideServiceMenu.shouldHave(text(e)));
     }
 
-    public void openDifferentElementsPage(){
-        if(headerDropdownServiceMenu.is(hidden)) {
+    public void openDifferentElementsPage() {
+        if (headerDropdownServiceMenu.is(hidden)) {
             headerDropdownServiceButton.click();
         }
         differentElementPageButton.click();
