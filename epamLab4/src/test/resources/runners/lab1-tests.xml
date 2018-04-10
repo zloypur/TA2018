@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Lab1" verbose="1">
+    <test name="Epam website">
+        <packages>
+            <package name="com.spbstu.epam"/>
+        </packages>
+    </test>
+</suite>
