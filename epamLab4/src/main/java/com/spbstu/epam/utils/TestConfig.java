@@ -12,4 +12,7 @@ public interface TestConfig extends Config {
 
     @Key("homepage.url")
     String homePageURL();
+
+    @Key("remote.driver.url")
+    String remoteDriverAddress();
 }

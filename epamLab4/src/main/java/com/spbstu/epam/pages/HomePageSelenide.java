@@ -61,7 +61,7 @@ public class HomePageSelenide {
         Selenide.page(this);
     }
 
-    @Step("Open Epam test site")
+    @Step
     public void open() {
         Selenide.open(ConfigFactory.create(TestConfig.class).homePageURL());
     }
@@ -70,7 +70,7 @@ public class HomePageSelenide {
         return Selenide.title();
     }
 
-    @Step("Login home page")
+    @Step
     public void login(String login, String password) {
         profilePhoto.click();
         loginField.sendKeys(login);
@@ -83,37 +83,37 @@ public class HomePageSelenide {
         logoutBtn.shouldBe(visible);
     }
 
-    @Step("User name check")
+    @Step
     public void checkUserName(String name) {
         profilePhoto.shouldBe(visible);
         profilePhoto.shouldHave(text(name));
     }
 
-    @Step("Benefits image check")
+    @Step
     public void checkImages(Integer count) {
         images.shouldHaveSize(count);
         images.forEach(e -> e.shouldBe(visible));
     }
 
-    @Step("Benefits text check")
+    @Step
     public void checkTexts(List<String> benefitsText) {
         this.benefitsText.shouldHaveSize(benefitsText.size());
         this.benefitsText.shouldHave(texts(benefitsText));
     }
 
-    @Step("Main title check")
+    @Step
     public void checkMainTitle(String title) {
         mainTitle.shouldBe(visible);
         mainTitle.shouldHave(text(title));
     }
 
-    @Step("Main text check")
+    @Step
     public void checkMainText(String text) {
         mainText.shouldBe(visible);
         mainText.shouldHave(text(text));
     }
 
-    @Step("Header service menu check")
+    @Step
     public void checkHeaderServiceMenuOptions(List<String> optionsText) {
         if (headerDropdownServiceMenu.is(hidden)) {
             headerDropdownServiceButton.click();
@@ -122,7 +122,7 @@ public class HomePageSelenide {
         optionsText.forEach(e -> headerDropdownServiceMenu.shouldHave(text(e)));
     }
 
-    @Step("Left side service menu check")
+    @Step
     public void checkLeftSideServiceMenuOption(List<String> optionsText) {
         if (leftSideServiceMenu.is(hidden)) {
             leftSideServiceButton.click();
@@ -131,7 +131,7 @@ public class HomePageSelenide {
         optionsText.forEach(e -> leftSideServiceMenu.shouldHave(text(e)));
     }
 
-    @Step("Different element page open")
+    @Step
     public void openDifferentElementsPage() {
         if (headerDropdownServiceMenu.is(hidden)) {
             headerDropdownServiceButton.click();

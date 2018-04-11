@@ -27,7 +27,8 @@
     <test.runner>lab1-tests.xml</test.runner>
     <driver.path>/Users/zloypur/selenium/chromedriver</driver.path>
     <homepage.url>https://jdi-framework.github.io/tests/index.htm</homepage.url>
-    <aspectj.version>1.7.4</aspectj.version>
+    <remote.driver.url>127.0.0.1:4444</remote.driver.url>
+    <aspectj.version>1.8.13</aspectj.version>
   </properties>
 
   <build>
@@ -88,6 +89,10 @@
             -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
           </argLine>
           <!--only for 1.3.* TestNG adapters. Since 1.4.0.RC4, the listener adds via ServiceLoader-->
+          <systemPropertyVariables>
+            <webdriver.chrome.driver>/Users/zloypur/selenium/chromedriver</webdriver.chrome.driver>
+            <selenide.browser>com.spbstu.utils.CustomWebDriverProvider</selenide.browser>
+          </systemPropertyVariables>
           <properties>
             <property>
               <name>listener</name>
