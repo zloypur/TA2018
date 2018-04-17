@@ -1,14 +1,14 @@
 package com.spbstu.epam;
 
 import com.codeborne.selenide.Configuration;
+import com.spbstu.epam.allure.AllureAttachmentListener;
 import com.spbstu.epam.utils.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Step;
-import ru.yandex.qatools.allure.annotations.Title;
+import ru.yandex.qatools.allure.annotations.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +19,9 @@ import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAG
 import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_DROPDOWN_TEXT.DROPDOWN_TEXT_4;
 import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_RADIO_TEXT.RIGHT_RADIO_TEXT;
 
+@Listeners(AllureAttachmentListener.class)
+@Features({"Selenide Test Suite"})
+@Stories({"Website test"})
 public class WebsiteTest {
 
     /*
