@@ -61,7 +61,7 @@ public class HomePageSelenide {
         Selenide.page(this);
     }
 
-    @Step
+    @Step("Open home page")
     public void open() {
         Selenide.open(ConfigFactory.create(TestConfig.class).homePageURL());
     }
@@ -70,7 +70,7 @@ public class HomePageSelenide {
         return Selenide.title();
     }
 
-    @Step
+    @Step("Log in home page")
     public void login(String login, String password) {
         profilePhoto.click();
         loginField.sendKeys(login);
@@ -83,25 +83,25 @@ public class HomePageSelenide {
         logoutBtn.shouldBe(visible);
     }
 
-    @Step
+    @Step("Check user name")
     public void checkUserName(String name) {
         profilePhoto.shouldBe(visible);
         profilePhoto.shouldHave(text(name));
     }
 
-    @Step
+    @Step("Check images presence")
     public void checkImages(Integer count) {
         images.shouldHaveSize(count);
         images.forEach(e -> e.shouldBe(visible));
     }
 
-    @Step
+    @Step("Check texts presence")
     public void checkTexts(List<String> benefitsText) {
         this.benefitsText.shouldHaveSize(benefitsText.size());
         this.benefitsText.shouldHave(texts(benefitsText));
     }
 
-    @Step
+    @Step("Check main title")
     public void checkMainTitle(String title) {
         mainTitle.shouldBe(visible);
         mainTitle.shouldHave(text(title));
