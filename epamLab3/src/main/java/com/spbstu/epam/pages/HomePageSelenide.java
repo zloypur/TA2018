@@ -56,6 +56,9 @@ public class HomePageSelenide {
     @FindBy(css = ".dropdown-menu | [href=\"page8.htm\"]")
     SelenideElement differentElementPageButton;
 
+    @FindBy(css = ".dropdown-menu | [href=\"page4.htm\"]")
+    SelenideElement datesPageButton;
+
     public HomePageSelenide() {
         Selenide.page(this);
     }
@@ -126,5 +129,12 @@ public class HomePageSelenide {
             headerDropdownServiceButton.click();
         }
         differentElementPageButton.click();
+    }
+
+    public void openDatesPage() {
+        if (headerDropdownServiceMenu.is(hidden)) {
+            headerDropdownServiceButton.click();
+        }
+        datesPageButton.click();
     }
 }

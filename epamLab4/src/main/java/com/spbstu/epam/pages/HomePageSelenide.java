@@ -83,37 +83,37 @@ public class HomePageSelenide {
         logoutBtn.shouldBe(visible);
     }
 
-    @Step("Check user name")
+    @Step("Check user name on home page")
     public void checkUserName(String name) {
         profilePhoto.shouldBe(visible);
         profilePhoto.shouldHave(text(name));
     }
 
-    @Step("Check images presence")
+    @Step("Check images presence on home page")
     public void checkImages(Integer count) {
         images.shouldHaveSize(count);
         images.forEach(e -> e.shouldBe(visible));
     }
 
-    @Step("Check texts presence")
+    @Step("Check texts presence on home page")
     public void checkTexts(List<String> benefitsText) {
         this.benefitsText.shouldHaveSize(benefitsText.size());
         this.benefitsText.shouldHave(texts(benefitsText));
     }
 
-    @Step("Check main title")
+    @Step("Check main title on home page")
     public void checkMainTitle(String title) {
         mainTitle.shouldBe(visible);
         mainTitle.shouldHave(text(title));
     }
 
-    @Step
+    @Step("Check main title on home page")
     public void checkMainText(String text) {
         mainText.shouldBe(visible);
         mainText.shouldHave(text(text));
     }
 
-    @Step
+    @Step("Check header service menu on home page")
     public void checkHeaderServiceMenuOptions(List<String> optionsText) {
         if (headerDropdownServiceMenu.is(hidden)) {
             headerDropdownServiceButton.click();
@@ -122,7 +122,7 @@ public class HomePageSelenide {
         optionsText.forEach(e -> headerDropdownServiceMenu.shouldHave(text(e)));
     }
 
-    @Step
+    @Step("Check left side service menu on home page")
     public void checkLeftSideServiceMenuOption(List<String> optionsText) {
         if (leftSideServiceMenu.is(hidden)) {
             leftSideServiceButton.click();
@@ -131,7 +131,7 @@ public class HomePageSelenide {
         optionsText.forEach(e -> leftSideServiceMenu.shouldHave(text(e)));
     }
 
-    @Step
+    @Step("Open different elements page")
     public void openDifferentElementsPage() {
         if (headerDropdownServiceMenu.is(hidden)) {
             headerDropdownServiceButton.click();

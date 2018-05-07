@@ -42,8 +42,8 @@ public class WebsiteTest {
     /*
      * Create Test method which makes all the checks from the specification using pageObjects
      */
-    @Test
-    public void websiteTest() {
+    @Test(enabled = false)
+    public void testCase1() {
         /*
          * open site by url
          */
@@ -120,5 +120,30 @@ public class WebsiteTest {
          */
         differentElementsPageSelenide.checkLogs(Arrays.asList(LEFT_CHECKBOX_TEXT.getValue(),
                 MID_RIGHT_CHECKBOX_TEXT.getValue()));
+    }
+
+    @Test
+    public void testCase2() {
+         /*
+         * open site by url
+         */
+        homePageSelenide.open();
+
+        /*
+         * log in website
+         */
+        homePageSelenide.login(LOGIN.getValue().toString(), PASSWORD.getValue().toString());
+
+        /*
+         * user name check
+         */
+        homePageSelenide.checkUserName(USERNAME.getValue().toString());
+
+        homePageSelenide.openDatesPage();
+
+        datesPageSelenide.setSliderRange(0, 100);
+        datesPageSelenide.setSliderRange(0, 0);
+        datesPageSelenide.setSliderRange(100, 100);
+        datesPageSelenide.setSliderRange(30, 70);
     }
 }
