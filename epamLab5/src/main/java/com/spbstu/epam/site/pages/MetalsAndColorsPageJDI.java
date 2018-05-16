@@ -33,7 +33,7 @@ public class MetalsAndColorsPageJDI extends WebPage {
     @JDropList(root = @FindBy(css = ".salad"),
             expand = @FindBy(css = ".caret"),
             list = @FindBy(tagName = "li"))
-    public CheckList saladDropList;
+    public DropList saladDropList;
 
     @FindBy(css = ".panel-body-list.results li")
     public TextList result;
