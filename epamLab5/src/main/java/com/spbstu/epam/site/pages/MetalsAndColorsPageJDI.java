@@ -10,8 +10,7 @@ import com.epam.jdi.uitests.web.selenium.elements.pageobjects.annotations.object
 import com.epam.jdi.uitests.web.selenium.elements.pageobjects.annotations.objects.JDropdown;
 import com.spbstu.epam.entities.Data;
 import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
+import org.testng.Assert;
 
 
 @JPage(url = "/page2.htm", title = "Metal and Colors")
@@ -42,7 +41,7 @@ public class MetalsAndColorsPageJDI extends WebPage {
     @FindBy(css = "#submit-button")
     public Button submit;
 
-    public List fillMetalsAndColorsForm(Data data) {
+    public void fillMetalsAndColorsForm(Data data) {
         radioButtons.select(Integer.toString(data.getSummary()[0]));
         radioButtons.select(Integer.toString(data.getSummary()[1]));
 
@@ -70,6 +69,19 @@ public class MetalsAndColorsPageJDI extends WebPage {
             elementsCheckList.select(s);
         }
 
-        return result.getTextList();
+        Assert.assertEquals(data.getSummary()[0] + data.getSummary()[1],
+                Integer.parseInt(result.getText(0).split(" ")[1]));
+        for (String s : data.getElements()) {
+            Assert.assertTrue(result.getText(1).contains(s),
+                    String.format("Elements don't contain %s", s));
+        }
+        Assert.assertTrue(result.getText(2).contains(data.getColor()),
+                String.format("Color doesn't contain %s", data.getColor()));
+        Assert.assertTrue(result.getText(3).contains(data.getMetals()),
+                String.format("Metal don't contain %s", data.getMetals()));
+//        for (String s : data.getVegetables()) {
+//            Assert.assertTrue(result.getText(4).contains(s),
+//                    String.format("Vegetables don't contain %s", s));
+//        }
     }
 }

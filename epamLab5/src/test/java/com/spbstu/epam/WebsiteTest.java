@@ -6,13 +6,10 @@ import com.spbstu.epam.entities.Data;
 import com.spbstu.epam.site.EpamTestWebsiteSelenide;
 import com.spbstu.epam.utils.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
-import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 import static com.epam.jdi.uitests.core.settings.JDISettings.driverFactory;
 import static com.epam.jdi.uitests.core.settings.JDISettings.logger;
@@ -75,22 +72,7 @@ public class WebsiteTest extends TestNGBase {
     public void websiteTest(Data data) {
         System.out.println(data.toString());
 
-        List<String> result = metalsAndColorsPageJDI.fillMetalsAndColorsForm(data);
-
-        Assert.assertEquals(data.getSummary()[0] + data.getSummary()[1],
-                Integer.parseInt(result.get(0).split(" ")[1]));
-        for (String s : data.getElements()) {
-            Assert.assertTrue(result.get(1).contains(s),
-                    String.format("Elements don't contain %s", s));
-        }
-        Assert.assertTrue(result.get(2).contains(data.getColor()),
-                String.format("Color doesn't contain %s", data.getColor()));
-        Assert.assertTrue(result.get(3).contains(data.getMetals()),
-                String.format("Metal don't contain %s", data.getMetals()));
-//        for (String s : data.getVegetables()) {
-//            Assert.assertTrue(result.Text(4).contains(s),
-//                    String.format("Vegetables don't contain %s", s));
-//        }
+        metalsAndColorsPageJDI.fillMetalsAndColorsForm(data);
     }
 
 

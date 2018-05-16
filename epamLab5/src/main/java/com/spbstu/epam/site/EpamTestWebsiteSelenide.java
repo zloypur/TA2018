@@ -41,6 +41,4 @@ public class EpamTestWebsiteSelenide extends WebSite {
     public static void login(String name, String password) {
         login(new User(name, password));
     }
-
-
 }
