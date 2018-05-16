@@ -30,10 +30,15 @@ public class MetalsAndColorsPageJDI extends WebPage {
             list = @FindBy(tagName = "li"))
     public ComboBox metalsComboBox;
 
-    @JDropList(root = @FindBy(css = ".salad"),
+//    @JDropList(root = @FindBy(css = ".salad"),
+//            expand = @FindBy(css = ".caret"),
+//            list = @FindBy(tagName = "li"))
+
+    @JComboBox(root = @FindBy(css = ".salad"),
             expand = @FindBy(css = ".caret"),
-            list = @FindBy(tagName = "li"))
-    public DropList saladDropList;
+            list = @FindBy(tagName = "li"),
+            value = @FindBy(tagName = "button"))
+    public ComboBox saladDropList;
 
     @FindBy(css = ".panel-body-list.results li")
     public TextList result;
@@ -57,10 +62,16 @@ public class MetalsAndColorsPageJDI extends WebPage {
         //can't perform any actions with DropList
         //due to issues with @JDropList.
         //It can't find locator.
-//        saladDropList.uncheckAll();
-//        for (String s : data.getVegetables()) {
-//            saladDropList.check(s);
-//        }
+        //saladDropList.uncheckAll();
+
+        //cleanup drop list
+        for (String s : saladDropList.getValue().split(", ")) {
+            saladDropList.select(s);
+        }
+
+        for (String s : data.getVegetables()) {
+            saladDropList.select(s);
+        }
 
         submit.click();
 
@@ -79,9 +90,9 @@ public class MetalsAndColorsPageJDI extends WebPage {
                 String.format("Color doesn't contain %s", data.getColor()));
         Assert.assertTrue(result.getText(3).contains(data.getMetals()),
                 String.format("Metal don't contain %s", data.getMetals()));
-//        for (String s : data.getVegetables()) {
-//            Assert.assertTrue(result.getText(4).contains(s),
-//                    String.format("Vegetables don't contain %s", s));
-//        }
+        for (String s : data.getVegetables()) {
+            Assert.assertTrue(result.getText(4).contains(s),
+                    String.format("Vegetables don't contain %s", s));
+        }
     }
 }
