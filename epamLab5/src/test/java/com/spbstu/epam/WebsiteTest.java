@@ -1,124 +1,97 @@
 package com.spbstu.epam;
 
-import com.codeborne.selenide.Configuration;
+import com.epam.jdi.uitests.web.selenium.elements.composite.WebSite;
+import com.epam.jdi.uitests.web.testng.testRunner.TestNGBase;
+import com.spbstu.epam.entities.Data;
+import com.spbstu.epam.site.EpamTestWebsiteSelenide;
 import com.spbstu.epam.utils.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
+import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static com.spbstu.epam.EpamTestWebsiteSelenide.*;
-import static com.spbstu.epam.enums.HOME_PAGE_DATA.*;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_CHECKBOX_TEXT.LEFT_CHECKBOX_TEXT;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_CHECKBOX_TEXT.MID_RIGHT_CHECKBOX_TEXT;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_DROPDOWN_TEXT.DROPDOWN_TEXT_4;
-import static com.spbstu.epam.enums.differentElementsPage.DIFFERENT_ELEMENTS_PAGE_RADIO_TEXT.RIGHT_RADIO_TEXT;
+import static com.epam.jdi.uitests.core.settings.JDISettings.driverFactory;
+import static com.epam.jdi.uitests.core.settings.JDISettings.logger;
+import static com.spbstu.epam.enums.HOME_PAGE_DATA.LOGIN;
+import static com.spbstu.epam.enums.HOME_PAGE_DATA.PASSWORD;
+import static com.spbstu.epam.site.EpamTestWebsiteSelenide.*;
+import static com.spbstu.epam.utils.ResourceLoader.getData;
 
-public class WebsiteTest {
+public class WebsiteTest extends TestNGBase {
+
+    @DataProvider(name = "dataProvider")
+    public Object[] createData() {
+        return new Object[]{
+                getData("data_1"),
+                getData("data_2"),
+                getData("data_3"),
+                getData("data_4"),
+                getData("data_5")
+        };
+    }
 
     /*
      * Create BeforeSuite method which get properties from test\resources\test.properties and configuring Selenide
      */
     @BeforeSuite
     public void beforeSuite() {
-        TestConfig config = ConfigFactory.create(TestConfig.class);
-        System.setProperty("webdriver.chrome.driver", config.pathToDriver());
-
-        Configuration.browser = "CHROME";
-        Configuration.timeout = 4000;
+        driverFactory.setDriverPath(ConfigFactory.create(TestConfig.class).driverFolder());
+        WebSite.init(EpamTestWebsiteSelenide.class);
+        logger.info("Run Tests");
+        driverFactory.getDriver();//start Chrome
     }
 
     /*
-     * Create BeforeTest method which opens Chrome window, maximaized it, navigates to the test website
+     * Create BeforeTest method which opens home page log in and navigates to metals and colors page
      */
     @BeforeTest
     public void beforeTest() {
-        init();
+        /*
+         * open site home page
+         */
+        homePageJDI.open();
+        homePageJDI.checkOpened();
+
+        /*
+         * log in website
+         */
+        login(LOGIN.getValue().toString(), PASSWORD.getValue().toString());
+
+        /*
+         * open site metals and colors page
+         */
+        openMetalsAndColorsPage();
+        metalsAndColorsPageJDI.checkOpened();
     }
 
     /*
      * Create Test method which makes all the checks from the specification using pageObjects
      */
-    @Test
-    public void websiteTest() {
-        /*
-         * open site by url
-         */
-        homePageJDI.open();
+    @Test(dataProvider = "dataProvider")
+    public void websiteTest(Data data) {
+        System.out.println(data.toString());
 
-        /*
-         * log in website
-         */
-        homePageJDI.login(LOGIN.getValue().toString(), PASSWORD.getValue().toString());
+        List<String> result = metalsAndColorsPageJDI.fillMetalsAndColorsForm(data);
 
-        /*
-         * user name check
-         */
-        homePageJDI.checkUserName(USERNAME.getValue().toString());
-
-        /*
-         * presence of images on the home page check
-         */
-        homePageJDI.checkImages((Integer) IMAGES_COUNT.getValue());
-
-        /*
-         * presence and correctness of under images texts on the home page check
-         */
-        homePageJDI.checkTexts((List<String>) BENEFITS_TEXT.getValue());
-
-        /*
-         * main header and text below check
-         */
-        homePageJDI.checkMainTitle((String) MAIN_HEADER_TEXT.getValue());
-        homePageJDI.checkMainText((String) HEADER_TEXT.getValue());
-
-        /*
-         * header service menu visibility and options check
-         */
-        homePageJDI.checkHeaderServiceMenuOptions((List<String>) HEADER_DROPDOWN_SERVICE_MENU_OPTIONS_TEXT.getValue());
-
-        /*
-         * left side service menu visibility and options check
-         */
-        homePageJDI.checkLeftSideServiceMenuOption((List<String>) LEFT_SIDE_SERVICE_MENU_OPTIONS_TEXT.getValue());
-
-        /*
-         * open other page through header menu Service -> Different Elements
-         */
-        homePageJDI.openDifferentElementsPage();
-
-        /*
-         * checks presence of all needed elements on the Different Elements page
-         */
-        differentElementsPageJDI.checkPageElements();
-
-        /*
-         * select required elements on the Different Elements page
-         */
-        differentElementsPageJDI.setCheckboxSelected(LEFT_CHECKBOX_TEXT.getValue());
-        differentElementsPageJDI.setCheckboxSelected(MID_RIGHT_CHECKBOX_TEXT.getValue());
-        differentElementsPageJDI.setRadioSelected(RIGHT_RADIO_TEXT.getValue());
-        differentElementsPageJDI.setDropdownValue(DROPDOWN_TEXT_4.getValue());
-
-        /*
-         * checks that logs are coinciding with performed actions
-         */
-        differentElementsPageJDI.checkLogs((List<String>) Arrays.asList(DROPDOWN_TEXT_4.getValue(),
-                RIGHT_RADIO_TEXT.getValue(), MID_RIGHT_CHECKBOX_TEXT.getValue(), LEFT_CHECKBOX_TEXT.getValue()));
-
-        /*
-         * unselect required elements
-         */
-        differentElementsPageJDI.setCheckboxUnselected(LEFT_CHECKBOX_TEXT.getValue());
-        differentElementsPageJDI.setCheckboxUnselected(MID_RIGHT_CHECKBOX_TEXT.getValue());
-
-        /*
-         * check that logs are coinciding with performed actions
-         */
-        differentElementsPageJDI.checkLogs(Arrays.asList(LEFT_CHECKBOX_TEXT.getValue(),
-                MID_RIGHT_CHECKBOX_TEXT.getValue()));
+        Assert.assertEquals(data.getSummary()[0] + data.getSummary()[1],
+                Integer.parseInt(result.get(0).split(" ")[1]));
+        for (String s : data.getElements()) {
+            Assert.assertTrue(result.get(1).contains(s),
+                    String.format("Elements don't contain %s", s));
+        }
+        Assert.assertTrue(result.get(2).contains(data.getColor()),
+                String.format("Color doesn't contain %s", data.getColor()));
+        Assert.assertTrue(result.get(3).contains(data.getMetals()),
+                String.format("Metal don't contain %s", data.getMetals()));
+//        for (String s : data.getVegetables()) {
+//            Assert.assertTrue(result.Text(4).contains(s),
+//                    String.format("Vegetables don't contain %s", s));
+//        }
     }
+
+
 }

@@ -10,6 +10,9 @@ public interface TestConfig extends Config {
     @Key("webdriver.chrome.driver")
     String pathToDriver();
 
+    @Key("driver.folder")
+    String driverFolder();
+
     @Key("homepage.url")
     String homePageURL();
 }
