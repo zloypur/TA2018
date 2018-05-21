@@ -1,6 +1,10 @@
 package com.spbstu.epam;
 
+<<<<<<< HEAD
 import com.sun.xml.internal.bind.v2.TODO;
+=======
+import com.spbstu.epam.utils.TestConfig;
+>>>>>>> 614a8218a7ea2631bb2960c6ad2cbbbcc0379fe3
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,11 +13,10 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import utils.TestConfig;
 
-import java.util.Arrays;
 import java.util.List;
 
+<<<<<<< HEAD
 // TODO you have to format your code and remove useless imports
 public class WebsiteTest {
 
@@ -35,6 +38,12 @@ public class WebsiteTest {
             "QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT " +
             "DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR.";
     // !TODO
+=======
+import static com.spbstu.epam.enums.HOME_PAGE_DATA.*;
+
+public class WebsiteTest {
+
+>>>>>>> 614a8218a7ea2631bb2960c6ad2cbbbcc0379fe3
 
     private WebDriver driver;
 
@@ -42,9 +51,15 @@ public class WebsiteTest {
      * Create BeforeSuite method which get properties from test\resources\test.properties
      */
     @BeforeSuite
+<<<<<<< HEAD
     public void beforeSuite (){ // <--
         // TODO this not really good idea couse in case if you have more than one property you will recreate the whole TestConfig...
         System.setProperty("webdriver.chrome.driver", ConfigFactory.create(TestConfig.class).pathToDriver());
+=======
+    public void beforeSuite (){
+        TestConfig config = ConfigFactory.create(TestConfig.class);
+        System.setProperty("webdriver.chrome.driver", config.pathToDriver());
+>>>>>>> 614a8218a7ea2631bb2960c6ad2cbbbcc0379fe3
     }
 
     /*
@@ -74,18 +89,22 @@ public class WebsiteTest {
          * open site by url
          */
         EpamTestWebsite.homePage.open();
-        Assert.assertEquals(EpamTestWebsite.homePage.currentURL(), TEST_WEBSITE_URL);
+        Assert.assertEquals(EpamTestWebsite.homePage.currentURL(), TEST_WEBSITE_URL.getValue());
 
         /*
          * chrome title check
          */
-        Assert.assertEquals(EpamTestWebsite.homePage.currentBrowserTitle(), TEST_WEBSITE_TITLE);
+        Assert.assertEquals(EpamTestWebsite.homePage.currentBrowserTitle(), TEST_WEBSITE_TITLE.getValue());
 
         /*
          * log in website
          */
+<<<<<<< HEAD
         EpamTestWebsite.homePage.login(LOGIN, PASSWORD);
         // TODO what is the reason why you are using shielding character ? From my point of view it will work pretty good as is...
+=======
+        EpamTestWebsite.homePage.login((String)LOGIN.getValue(), (String)PASSWORD.getValue());
+>>>>>>> 614a8218a7ea2631bb2960c6ad2cbbbcc0379fe3
         Assert.assertTrue(EpamTestWebsite.homePage.isLoggedIn(),
                 "Logout button isn\'t displayed. Login wasn\'t successful.");
 
@@ -94,34 +113,36 @@ public class WebsiteTest {
          */
         Assert.assertTrue(EpamTestWebsite.homePage.isUserNameDisplayed(),
                 "User name isn\'t displayed");
-        Assert.assertEquals(EpamTestWebsite.homePage.userName(), USERNAME);
+        Assert.assertEquals(EpamTestWebsite.homePage.userName(), USERNAME.getValue());
 
         /*
          * chrome title second check
          */
-        Assert.assertEquals(EpamTestWebsite.homePage.currentBrowserTitle(), TEST_WEBSITE_TITLE);
+        Assert.assertEquals(EpamTestWebsite.homePage.currentBrowserTitle(), TEST_WEBSITE_TITLE.getValue());
 
         /*
          * presence of images on the home page check
          */
-        Assert.assertEquals(EpamTestWebsite.homePage.imagesCount(), IMAGES_COUNT,
-                String.format("There are %d images on the page which is lesser then required (%d)",EpamTestWebsite.homePage.imagesCount(), IMAGES_COUNT));
+        Assert.assertEquals(EpamTestWebsite.homePage.imagesCount(), IMAGES_COUNT.getValue(),
+                String.format("There are %d images on the page which is lesser then required (%d)",
+                        EpamTestWebsite.homePage.imagesCount(), IMAGES_COUNT.getValue()));
         Assert.assertTrue(EpamTestWebsite.homePage.isImagesDisplayed(), "Not all images are displayed.");
 
         /*
          * presence and correctness of under images texts on the home page check
          */
-        Assert.assertEquals(EpamTestWebsite.homePage.textsCount(), TEXTS_COUNT,
+        Assert.assertEquals(EpamTestWebsite.homePage.textsCount(), TEXTS_COUNT.getValue(),
                 String.format("There are %d texts on the page which is lesser then required (%d)",
-                        EpamTestWebsite.homePage.textsCount(), TEXTS_COUNT));
-        Assert.assertTrue(EpamTestWebsite.homePage.isTextsDisplayedCorrectly(BENEFITS_TEXT), "Not all texts are displayed correctly.");
+                        EpamTestWebsite.homePage.textsCount(), TEXTS_COUNT.getValue()));
+        Assert.assertTrue(EpamTestWebsite.homePage.isTextsDisplayedCorrectly((List<String>)BENEFITS_TEXT.getValue()),
+                "Not all texts are displayed correctly.");
 
         /*
          * main header and text below check
          */
         Assert.assertTrue(EpamTestWebsite.homePage.isMainTitleDisplayed(), "Main header text isn\'t displayed.");
         Assert.assertTrue(EpamTestWebsite.homePage.isMainTextsDisplayed(), "Header text isn\'t displayed.");
-        Assert.assertEquals(EpamTestWebsite.homePage.mainTitleText(), MAIN_HEADER_TEXT);
-        Assert.assertEquals(EpamTestWebsite.homePage.mainTextText(), HEADER_TEXT);
+        Assert.assertEquals(EpamTestWebsite.homePage.mainTitleText(), MAIN_HEADER_TEXT.getValue());
+        Assert.assertEquals(EpamTestWebsite.homePage.mainTextText(), HEADER_TEXT.getValue());
     }
 }

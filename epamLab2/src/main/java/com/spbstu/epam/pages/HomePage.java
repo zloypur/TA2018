@@ -1,11 +1,11 @@
 package com.spbstu.epam.pages;
 
+import com.spbstu.epam.utils.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utils.TestConfig;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class HomePage {
 
     // TODO oh my, just use one of the Lists's method for this purpose...
     public boolean isUserNameDisplayed(){
-        return 0 == profilePhoto.findElements(By.cssSelector(".hidden")).size();
+        return profilePhoto.findElements(By.cssSelector(".hidden")).isEmpty();
     }
 
     public String userName(){
@@ -83,7 +83,6 @@ public class HomePage {
     // TODO i gon you idea with FLAG, but you do not use this particular variable...
     // TODO as additional activity you can try to refactoring this method with streams&lambda expressions
     public boolean isImagesDisplayed(){
-        boolean flag = false;
         for (WebElement e : images){
             if(!e.isDisplayed()) {
                 return false;

@@ -1,6 +1,6 @@
-epamLab1/*iml
-epamLab1/target/
-epamLab1/.idea/
-epamLab2/*iml
-epamLab2/target/
-epamLab2/.idea/
+*/*.iml
+*/target
+*/build
+*/.idea
+*/.logs
+*/*.jpg
