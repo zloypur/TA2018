@@ -67,6 +67,7 @@ public class HomePage {
         return logoutBtn.isDisplayed();
     }
 
+    // TODO oh my, just use one of the Lists's method for this purpose...
     public boolean isUserNameDisplayed(){
         return profilePhoto.findElements(By.cssSelector(".hidden")).isEmpty();
     }
@@ -79,6 +80,8 @@ public class HomePage {
         return images.size();
     }
 
+    // TODO i gon you idea with FLAG, but you do not use this particular variable...
+    // TODO as additional activity you can try to refactoring this method with streams&lambda expressions
     public boolean isImagesDisplayed(){
         for (WebElement e : images){
             if(!e.isDisplayed()) {
@@ -101,6 +104,8 @@ public class HomePage {
         }
         return true;
     }
+
+    // !TODO
 
     public boolean isMainTitleDisplayed(){
         return mainTitle.isDisplayed();

@@ -1,6 +1,7 @@
 package com.spbstu.epam;
 
 import com.epam.jdi.uitests.web.selenium.elements.composite.WebSite;
+import com.epam.jdi.uitests.web.settings.WebSettings;
 import com.epam.jdi.uitests.web.testng.testRunner.TestNGBase;
 import com.spbstu.epam.entities.Data;
 import com.spbstu.epam.site.EpamTestWebsiteSelenide;
@@ -20,6 +21,9 @@ import static com.spbstu.epam.utils.ResourceLoader.getData;
 
 public class WebsiteTest extends TestNGBase {
 
+    // TODO it will be better if you transform data to array at once.
+    // TODO basically, you should not stick with data name,
+    // TODO couse' if it changed or additional data was added you will change this code...
     @DataProvider(name = "dataProvider")
     public Object[] createData() {
         return new Object[]{
@@ -70,8 +74,10 @@ public class WebsiteTest extends TestNGBase {
      */
     @Test(dataProvider = "dataProvider")
     public void websiteTest(Data data) {
+        // TODO better way - WebSettings.logger.info(data.toString());
         System.out.println(data.toString());
 
+        // TODO actually, it was not really good to FILL and CHECK in one particular method...
         metalsAndColorsPageJDI.fillMetalsAndColorsForm(data);
     }
 

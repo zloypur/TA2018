@@ -1,6 +1,7 @@
 package com.spbstu.epam;
 
 import com.spbstu.epam.utils.TestConfig;
+
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,6 +12,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.List;
+
 
 import static com.spbstu.epam.enums.HOME_PAGE_DATA.*;
 
@@ -23,6 +25,7 @@ public class WebsiteTest {
      * Create BeforeSuite method which get properties from test\resources\test.properties
      */
     @BeforeSuite
+
     public void beforeSuite (){
         TestConfig config = ConfigFactory.create(TestConfig.class);
         System.setProperty("webdriver.chrome.driver", config.pathToDriver());
@@ -65,6 +68,7 @@ public class WebsiteTest {
         /*
          * log in website
          */
+
         EpamTestWebsite.homePage.login((String)LOGIN.getValue(), (String)PASSWORD.getValue());
         Assert.assertTrue(EpamTestWebsite.homePage.isLoggedIn(),
                 "Logout button isn\'t displayed. Login wasn\'t successful.");
