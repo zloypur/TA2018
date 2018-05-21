@@ -32,4 +32,8 @@ public class ResourceLoader {
     public static Data getData(String dataId) {
         return DATA.get(dataId);
     }
+
+    public static Object[] getAllData() {
+        return DATA.values().toArray();
+    }
 }

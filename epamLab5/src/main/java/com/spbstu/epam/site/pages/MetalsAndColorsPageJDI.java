@@ -78,17 +78,23 @@ public class MetalsAndColorsPageJDI extends WebPage {
         for (String s : data.getElements()) {
             elementsCheckList.select(s);
         }
+    }
 
+    public void checkMetalsAndColorsForm(Data data) {
         Assert.assertEquals(data.getSummary()[0] + data.getSummary()[1],
                 Integer.parseInt(result.getText(0).split(" ")[1]));
+
         for (String s : data.getElements()) {
             Assert.assertTrue(result.getText(1).contains(s),
                     String.format("Elements don't contain %s", s));
         }
+
         Assert.assertTrue(result.getText(2).contains(data.getColor()),
                 String.format("Color doesn't contain %s", data.getColor()));
+
         Assert.assertTrue(result.getText(3).contains(data.getMetals()),
                 String.format("Metal don't contain %s", data.getMetals()));
+
         for (String s : data.getVegetables()) {
             Assert.assertTrue(result.getText(4).contains(s),
                     String.format("Vegetables don't contain %s", s));

@@ -1,6 +1,7 @@
 package com.spbstu.epam;
 
 import com.epam.jdi.uitests.web.selenium.elements.composite.WebSite;
+import com.epam.jdi.uitests.web.settings.WebSettings;
 import com.epam.jdi.uitests.web.testng.testRunner.TestNGBase;
 import com.spbstu.epam.entities.Data;
 import com.spbstu.epam.site.EpamTestWebsiteSelenide;
@@ -16,19 +17,13 @@ import static com.epam.jdi.uitests.core.settings.JDISettings.logger;
 import static com.spbstu.epam.enums.HOME_PAGE_DATA.LOGIN;
 import static com.spbstu.epam.enums.HOME_PAGE_DATA.PASSWORD;
 import static com.spbstu.epam.site.EpamTestWebsiteSelenide.*;
-import static com.spbstu.epam.utils.ResourceLoader.getData;
+import static com.spbstu.epam.utils.ResourceLoader.getAllData;
 
 public class WebsiteTest extends TestNGBase {
 
     @DataProvider(name = "dataProvider")
     public Object[] createData() {
-        return new Object[]{
-                getData("data_1"),
-                getData("data_2"),
-                getData("data_3"),
-                getData("data_4"),
-                getData("data_5")
-        };
+        return getAllData();
     }
 
     /*
@@ -70,9 +65,10 @@ public class WebsiteTest extends TestNGBase {
      */
     @Test(dataProvider = "dataProvider")
     public void websiteTest(Data data) {
-        System.out.println(data.toString());
+        WebSettings.logger.info(data.toString());
 
         metalsAndColorsPageJDI.fillMetalsAndColorsForm(data);
+        metalsAndColorsPageJDI.checkMetalsAndColorsForm(data);
     }
 
 
